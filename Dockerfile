@@ -13,11 +13,9 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
 
 # expose HTTP & MySQL Port
-EXPOSE 80
+EXPOSE 80 3306
 
-# Update apt stuff
-RUN apt-get -y install software-properties-common
-RUN add-apt-repository -y ppa:ufirst/php5
+# Update apt cache
 RUN apt-get update
 
 # Install software
@@ -39,15 +37,8 @@ RUN mkdir /srv/www && ln -s /srv/www /var/www
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/default /etc/nginx/sites-available/default
 
-# register the nginx service
-RUN mkdir /etc/service/nginx
-ADD nginx/nginx.sh /etc/service/nginx/run
-
 # PHP5 configuration
-RUN mv /etc/php5/conf.d/*.ini /etc/php5/fpm/conf.d/
 RUN echo "<?php phpinfo(); ?>" > /srv/www/phpinfo.php
-
-# register the php5-fpm service
 
 # mysql configuration
 ADD mysql/my.cnf /etc/mysql/my.cnf
@@ -56,13 +47,22 @@ RUN /usr/sbin/mysqld & \
     echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'changeme' WITH GRANT OPTION; FLUSH PRIVILEGES" \
     | mysql
 
-# Register the MySQL service
-RUN mkdir /etc/service/mysql
-ADD mysql/mysql.sh /etc/service/mysql/run
 
 # Download and unpack partkeepr v0.1.9
 RUN cd /srv/www && curl https://codeload.github.com/partkeepr/PartKeepr/tar.gz/0.1.9 |tar zx
 RUN cd /srv/www && ln -s PartKeepr-0.1.9 partkeepr
+
+# register the nginx service
+RUN mkdir /etc/service/nginx
+ADD nginx/nginx.sh /etc/service/nginx/run
+
+# register the php5-fpm service
+RUN mkdir /etc/service/php5-fpm
+ADD php5-fpm/php5-fpm.sh /etc/service/php5-fpm/run
+
+# Register the MySQL service
+RUN mkdir /etc/service/mysql
+ADD mysql/mysql.sh /etc/service/mysql/run
 
 # Clean up APT when done.
 #RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
