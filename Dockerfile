@@ -32,33 +32,49 @@ RUN apt-get install -y -q --no-install-recommends php5-cli
 RUN apt-get install -y -q --no-install-recommends php5-gd
 RUN apt-get install -y -q --no-install-recommends php5-json
 
+# add ssh keys
+RUN curl https://github.com/mhubig.keys >> /root/.ssh/authorized_keys
+
 # nginx configuration
 RUN mkdir /srv/www && ln -s /srv/www /var/www
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/default /etc/nginx/sites-available/default
 
-# PHP5 configuration
-RUN echo "<?php phpinfo(); ?>" > /srv/www/phpinfo.php
+# PHP5 & PHP-FPM configuration
+ADD php-fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf
+ADD php-fpm/fpm-www.conf /etc/php5/fpm/pool.d/www.conf
+ADD php-fpm/php.ini /etc/php5/fpm/php.ini
 
-# mysql configuration
+RUN pear channel-discover pear.symfony.com
+RUN pear channel-discover pear.doctrine-project.org
+RUN pear channel-discover pear.twig-project.org
+RUN pear install pear.doctrine-project.org/DoctrineORM
+RUN pear install pear.doctrine-project.org/DoctrineSymfonyYaml
+RUN pear install pear.doctrine-project.org/DoctrineSymfonyConsole
+RUN pear install twig/Twig
+
+# MySQL configuration
 ADD mysql/my.cnf /etc/mysql/my.cnf
-RUN /usr/sbin/mysqld & \
-    sleep 10s && \
-    echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'changeme' WITH GRANT OPTION; FLUSH PRIVILEGES" \
-    | mysql
+ADD mysql/config.sql /root/config.sql
+RUN /usr/sbin/mysqld & sleep 10s && mysql < /root/config.sql
+RUN rm /root/config.sql
 
-
-# Download and unpack partkeepr v0.1.9
-RUN cd /srv/www && curl https://codeload.github.com/partkeepr/PartKeepr/tar.gz/0.1.9 |tar zx
-RUN cd /srv/www && ln -s PartKeepr-0.1.9 partkeepr
+# Download and configure partkeepr v0.1.9
+RUN cd /srv/www && curl http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj
+RUN cd /srv/www && ln -s partKeepr-0.1.9 partkeepr
+RUN chown -R www-data:www-data /srv/www/partkeepr/data
+ADD partkeepr/config.php /srv/www/partkeepr/config.php
+ADD partkeepr/config.sql /srv/www/partkeepr/config.sql
+RUN /usr/sbin/mysqld & sleep 10s && mysql < /srv/www/partkeepr/config.sql
+ADD partkeepr/cronjobs /etc/cron.d/partkeepr
 
 # register the nginx service
 RUN mkdir /etc/service/nginx
 ADD nginx/nginx.sh /etc/service/nginx/run
 
-# register the php5-fpm service
-RUN mkdir /etc/service/php5-fpm
-ADD php5-fpm/php5-fpm.sh /etc/service/php5-fpm/run
+# register the php-fpm service
+RUN mkdir /etc/service/php-fpm
+ADD php-fpm/php-fpm.sh /etc/service/php-fpm/run
 
 # Register the MySQL service
 RUN mkdir /etc/service/mysql

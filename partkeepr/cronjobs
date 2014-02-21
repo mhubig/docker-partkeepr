@@ -1,0 +1,4 @@
+0 0,12 * * * /usr/bin/php /srv/www/partkeepr/cronjobs/CreateStatisticSnapshot.php
+0 0,6,12,18 * * * /usr/bin/php /srv/www/partkeepr/cronjobs/UpdatePartCacheData.php
+0 0 */2 * * /usr/bin/php /srv/www/partkeepr/cronjobs/CheckForUpdates.php
+0 0 */2 * * /usr/bin/php /srv/www/partkeepr/cronjobs/UpdateTipsOfTheDay.php
