@@ -1,0 +1,3 @@
+CREATE DATABASE partkeepr CHARACTER SET UTF8;
+GRANT USAGE ON *.* TO partkeepr@127.0.0.1 IDENTIFIED BY 'partkeepr';
+GRANT ALL PRIVILEGES ON partkeepr.* TO partkeepr@127.0.0.1;
