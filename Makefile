@@ -16,7 +16,7 @@ build:
 	fi
 
 tag: build
-	docker tag $(NAME):$(VERSION) $(NAME):latest;
+	docker tag $(NAME):$(VERSION) $(NAME):latest
 
 push: tag
 	docker push $(NAME)
