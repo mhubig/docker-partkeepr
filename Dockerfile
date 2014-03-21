@@ -38,6 +38,9 @@ RUN mkdir /srv/www && ln -s /srv/www /var/www
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/default /etc/nginx/sites-available/default
 
+# mysql configuration
+ADD mysql/my.cnf /etc/mysql/my.cnf
+
 # PHP5 & PHP-FPM configuration
 ADD php-fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf
 ADD php-fpm/fpm-www.conf /etc/php5/fpm/pool.d/www.conf
