@@ -1,5 +1,5 @@
 # start from phusion/baseimage
-FROM phusion/baseimage:0.9.6
+FROM phusion/baseimage:0.9.8
 MAINTAINER  Markus Hubig <mhubig@imko.de>
 
 # Set correct environment variables.
@@ -81,4 +81,4 @@ RUN mkdir /etc/service/mysql
 ADD mysql/mysql.sh /etc/service/mysql/run
 
 # Clean up APT when done.
-#RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
