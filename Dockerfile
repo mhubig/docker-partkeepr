@@ -6,9 +6,6 @@ MAINTAINER  Markus Hubig <mhubig@imko.de>
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-# Regenerate SSH host keys.
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
@@ -29,9 +26,6 @@ RUN apt-get update && apt-get install -y \
     php5-cli \
     php5-gd \
     php5-json
-
-# add ssh keys
-RUN curl https://github.com/mhubig.keys >> /root/.ssh/authorized_keys
 
 # nginx configuration
 RUN mkdir /srv/www && ln -s /srv/www /var/www
@@ -88,6 +82,9 @@ ADD php-fpm/php-fpm.sh /etc/service/php-fpm/run
 # Register the MySQL service
 RUN mkdir /etc/service/mysql
 ADD mysql/mysql.sh /etc/service/mysql/run
+
+# unregister the SSH service
+RUN rm -rf /etc/service/sshd
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
