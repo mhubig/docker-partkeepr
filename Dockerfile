@@ -55,8 +55,9 @@ RUN pear install pear.doctrine-project.org/DoctrineSymfonyConsole
 RUN pear install twig/Twig
 
 # download partkeepr
-RUN cd /srv/www && curl http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj
-RUN cd /srv/www && mv partkeepr-0.1.9 partkeepr
+RUN cd /srv/www && \
+    curl http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj && \
+    mv partkeepr-0.1.9 partkeepr
 
 # config partkeepr
 ADD partkeepr/config.php /srv/www/partkeepr/config.php
@@ -65,8 +66,8 @@ ADD partkeepr/SetupDatabase.php /srv/www/partkeepr/testing/SetupDatabase.php
 ADD partkeepr/cronjobs /etc/cron.d/partkeepr
 
 # fix permissions
-RUN chown -R root:root /srv/www/partkeepr
-RUN chown -R www-data:www-data /srv/www/partkeepr/data
+RUN chown -R root:root /srv/www/partkeepr && \
+    chown -R www-data:www-data /srv/www/partkeepr/data
 
 # setup mysql db
 RUN /usr/sbin/mysqld & sleep 10s && \
