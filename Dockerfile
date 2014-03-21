@@ -12,25 +12,23 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
-# expose HTTP & MySQL Port
-EXPOSE 80 3306
+# expose HTTP port
+EXPOSE 80
 
-# Update apt cache
-RUN apt-get update
-
-# Install software
-RUN apt-get install -y -q --no-install-recommends nginx
-RUN apt-get install -y -q --no-install-recommends mysql-server
-RUN apt-get install -y -q --no-install-recommends php5-fpm
-RUN apt-get install -y -q --no-install-recommends php5-common
-RUN apt-get install -y -q --no-install-recommends php-pear
-RUN apt-get install -y -q --no-install-recommends php-apc
-RUN apt-get install -y -q --no-install-recommends php5-mysql
-RUN apt-get install -y -q --no-install-recommends php5-imagick
-RUN apt-get install -y -q --no-install-recommends php5-curl
-RUN apt-get install -y -q --no-install-recommends php5-cli
-RUN apt-get install -y -q --no-install-recommends php5-gd
-RUN apt-get install -y -q --no-install-recommends php5-json
+# Update apt cache & install software
+RUN apt-get update && apt-get install -y \
+    mysql-server \
+    nginx \
+    php5-fpm \
+    php5-common \
+    php-pear \
+    php-apc \
+    php5-mysql \
+    php5-imagick \
+    php5-curl \
+    php5-cli \
+    php5-gd \
+    php5-json
 
 # add ssh keys
 RUN curl https://github.com/mhubig.keys >> /root/.ssh/authorized_keys
@@ -53,20 +51,27 @@ RUN pear install pear.doctrine-project.org/DoctrineSymfonyYaml
 RUN pear install pear.doctrine-project.org/DoctrineSymfonyConsole
 RUN pear install twig/Twig
 
-# MySQL configuration
-ADD mysql/my.cnf /etc/mysql/my.cnf
-ADD mysql/config.sql /root/config.sql
-RUN /usr/sbin/mysqld & sleep 10s && mysql < /root/config.sql
-RUN rm /root/config.sql
-
-# Download and configure partkeepr v0.1.9
+# download partkeepr
 RUN cd /srv/www && curl http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj
-RUN cd /srv/www && ln -s partKeepr-0.1.9 partkeepr
-RUN chown -R www-data:www-data /srv/www/partkeepr/data
+RUN cd /srv/www && mv partkeepr-0.1.9 partkeepr
+
+# config partkeepr
 ADD partkeepr/config.php /srv/www/partkeepr/config.php
 ADD partkeepr/config.sql /srv/www/partkeepr/config.sql
-RUN /usr/sbin/mysqld & sleep 10s && mysql < /srv/www/partkeepr/config.sql
+ADD partkeepr/SetupDatabase.php /srv/www/partkeepr/testing/SetupDatabase.php
 ADD partkeepr/cronjobs /etc/cron.d/partkeepr
+
+# fix permissions
+RUN chown -R root:root /srv/www/partkeepr
+RUN chown -R www-data:www-data /srv/www/partkeepr/data
+
+# setup mysql db
+RUN /usr/sbin/mysqld & sleep 10s && \
+    cd /srv/www/partkeepr && \
+    mysql < config.sql
+RUN /usr/sbin/mysqld & sleep 10s &&  \
+    cd /srv/www/partkeepr/testing && \
+    php SetupDatabase.php --yes
 
 # register the nginx service
 RUN mkdir /etc/service/nginx
