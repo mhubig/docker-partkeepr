@@ -1,22 +1,29 @@
 ORG     := mhubig
 APP     := partkeepr
 NAME    := $(ORG)/$(APP)
-VERSION := 0.1.9
+BRANCH  := $(shell git rev-parse --abbrev-ref HEAD)
+VERSION := $(shell git describe)
 
-.PHONY: all build tag push list run stop
+.PHONY: all build tag push list run test inspect stop rm
 
 all: build
 
 build:
-	@if ! docker images $(NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); \
-	then                                                                       \
-		docker build -t $(NAME):$(VERSION) --rm .;                             \
-	else                                                                       \
-		true;                                                                  \
+	@if ! docker images $(NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION);\
+	then                                                                      \
+		docker build -t $(NAME):$(VERSION) --rm .;                            \
+	else                                                                      \
+		true;                                                                 \
 	fi
 
 tag: build
-	docker tag $(NAME):$(VERSION) $(NAME):latest
+	@if  [ $(BRANCH) = 'master' ];                     \
+	then                                               \
+		docker tag $(NAME):$(VERSION) $(NAME):latest;  \
+	elif [ $(BRANCH) = 'develop' ];                    \
+	then                                               \
+		docker tag $(NAME):$(VERSION) $(NAME):develop; \
+	fi
 
 push: tag
 	docker push $(NAME)
@@ -27,10 +34,14 @@ list:
 run:
 	docker run -d -p 22 -p 80:80 --name $(APP) $(NAME):$(VERSION)
 
-test:
+test: build
 	docker run -d -p 8022:22 -p 8080:80 --name $(APP) $(NAME):$(VERSION)
 	@echo 'To access the container run this command to forward the ports:'
 	@echo '$ boot2docker ssh -L 8080:localhost:8080 -L 8022:localhost:8022'
+
+inspect: build
+	docker run -t -i -p 8022:22 -p 8080:80 --rm $(NAME):$(VERSION) \
+		/sbin/my_init -- bash -l
 
 stop:
 	docker stop $(APP)
