@@ -50,7 +50,7 @@ RUN pear install twig/Twig
 
 # download partkeepr
 RUN cd /srv/www && \
-    curl http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj && \
+    curl -L http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj && \
     mv partkeepr-0.1.9 partkeepr
 
 # config partkeepr
