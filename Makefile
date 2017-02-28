@@ -9,15 +9,16 @@ VERSION := $(shell git describe)
 all: build
 
 build:
-	@if ! docker images $(NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION);	\
-	then                                                                      	\
-		docker build -t $(NAME):$(VERSION) --rm .;                            	\
-	else                                                                      	\
-		true;                                                                 	\
+	@if ! docker images $(NAME) | awk '{ print $$2 }' |	\
+		grep -q -F $(VERSION);							\
+	then												\
+		docker build -t $(NAME):$(VERSION) --rm .;		\
+	else												\
+		true;											\
 	fi
 
 tag: build
-	@if  [ $(BRANCH) = 'master' ];						\
+	@if [ $(BRANCH) = 'master' ];						\
 	then												\
 		docker tag $(NAME):$(VERSION) $(NAME):latest;	\
 	elif [ $(BRANCH) = 'develop' ];						\
@@ -27,7 +28,7 @@ tag: build
 	fi
 
 push: tag
-	@if  [ $(BRANCH) = 'master' ];						\
+	@if [ $(BRANCH) = 'master' ];						\
 	then												\
 		docker push $(NAME);							\
 	else												\
