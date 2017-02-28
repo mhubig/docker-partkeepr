@@ -28,6 +28,7 @@ RUN set -ex \
     \
     && a2enmod rewrite
 
-COPY php.ini /usr/local/etc/php/
+COPY php.ini /usr/local/etc/php/php.ini
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 VOLUME /var/www/html/data
