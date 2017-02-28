@@ -1,3 +1,8 @@
+#!/usr/bin/make -f
+#
+# Copyright (C) 2014-2017, Markus Hubig <mh@imko.de>
+#
+
 ORG     := mhubig
 APP     := partkeepr
 NAME    := $(ORG)/$(APP)
@@ -18,7 +23,7 @@ build:
 	fi
 
 tag: build
-	@if [ $(BRANCH) = 'master' ];						\
+	@if  [ $(BRANCH) = 'master' ];						\
 	then												\
 		docker tag $(NAME):$(VERSION) $(NAME):latest;	\
 	elif [ $(BRANCH) = 'develop' ];						\
@@ -28,11 +33,14 @@ tag: build
 	fi
 
 push: tag
-	@if [ $(BRANCH) = 'master' ];						\
+	@docker push $(NAME):$(VERSION);
+
+	@if  [ $(BRANCH) = 'master' ];						\
 	then												\
-		docker push $(NAME);							\
-	else												\
-		echo 'Please push from the master branch!';		\
+		docker push $(NAME):latest;						\
+	elif [ $(BRANCH) = 'develop' ];						\
+	then												\
+		docker push $(NAME):develop;					\
 	fi
 
 list:

@@ -1,10 +1,13 @@
 #!/bin/bash
 #
-# Copyright (C) 2014, Markus Hubig <mhubig@imko.de>
+# Copyright (C) 2014-2017, Markus Hubig <mh@imko.de>
 #
 
-VERSION_FILE='README.md'
-VERSION_TEMP='.README.md.new'
+README_FILE='README.md'
+README_TEMP='.README.md.new'
+
+DOCKER_FILE='Dockerfile'
+DOCKER_TEMP='.Dockerfile.new'
 
 function usage () {
     echo "usage: bump-version <version-id>"
@@ -17,8 +20,9 @@ function commit_hint () {
 }
 
 function update_version () {
-    sed -e "s/mhubig\/partkeepr:.*$/mhubig\/partkeepr:$1/g" \
-        $VERSION_FILE > $VERSION_TEMP
+    sed -e "s/> The most resent version is:.*$/> The most resent version is: $1/g" \
+        $README_FILE > $README_TEMP
+    sed -e "s/ENV VERSION .*$/ENV VERSION $1/g" $DOCKER_FILE > $DOCKER_TEMP
 }
 
 if [ $# -ne 1 ]; then
@@ -30,7 +34,8 @@ if ! update_version $1; then
     echo "Could not bump the version!" >&2
     exit 2
 else
-    mv $VERSION_TEMP $VERSION_FILE
+    mv $README_TEMP $README_FILE
+    mv $DOCKER_TEMP $DOCKER_FILE
 fi
 
 commit_hint $1
