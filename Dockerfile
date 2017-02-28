@@ -30,4 +30,4 @@ RUN set -ex \
 
 COPY php.ini /usr/local/etc/php/
 
-VOLUME /var/www/html
+VOLUME /var/www/html/data
