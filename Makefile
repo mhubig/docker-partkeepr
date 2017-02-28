@@ -1,4 +1,4 @@
-#!/usr/bin/make -f
+#!/usr/bin/env make -f
 #
 # Copyright (C) 2014-2017, Markus Hubig <mh@imko.de>
 #

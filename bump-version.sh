@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright (C) 2014-2017, Markus Hubig <mh@imko.de>
 #
