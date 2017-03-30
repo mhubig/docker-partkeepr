@@ -3,15 +3,19 @@ services:
  
   partkeepr:
     image: mhubig/partkeepr
-    depends_on:
-      - database
+    environment:
+      - PARTKEEPR_DATABASE_HOST=database  # not used for now
+      - PARTKEEPR_DATABASE_NAME=partkeepr # not used for now
+      - PARTKEEPR_DATABASE_PORT=3306      # not used for now
+      - PARTKEEPR_DATABASE_USER=partkeepr # not used for now
+      - PARTKEEPR_DATABASE_PASS=partkeepr # not used for now
+      - PARTKEEPR_OKTOPART_APIKEY=0123456 # not used for now
     ports:
       - "80:80"
     volumes:
       - partkeepr-data:/var/www/html/data
-    deploy:
-      restart_policy:
-        condition: any
+    depends_on:
+      - database
 
   database:
     image: mariadb
@@ -22,31 +26,6 @@ services:
       - MYSQL_PASSWORD=partkeepr
     volumes:
       - mysql-data:/var/lib/mysql
-    deploy:
-      restart_policy:
-        condition: any
-
-  cronsrv:
-    image: thoom/docker-cloud-cron
-    environment:
-      CRONJOB_CRON_SCHEDULE: '0 */6 * * *'
-    links:
-      - cronjob
-    deploy:
-      mode: global
-      restart_policy:
-        condition: any
-    
-  cronjob:
-    image: mhubig/partkeepr
-    command: '/usr/local/bin/php /var/www/html/app/console partkeepr:cron:run'
-    depends_on:
-      - database
-    volumes:
-      - partkeepr-data:/var/www/html/data
-    deploy:
-      restart_policy:
-        condition: none
 
 volumes:
   partkeepr-data:
