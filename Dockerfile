@@ -1,7 +1,7 @@
 FROM php:7-apache
 MAINTAINER Markus Hubig <mh@imko.de>
 
-ENV VERSION 1.2.1
+ENV VERSION 1.2.0
 
 # defaults, overwrite via cli to customize (not used for now)
 ENV PARTKEEPR_DATABASE_HOST database
