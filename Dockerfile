@@ -3,7 +3,7 @@ MAINTAINER Markus Hubig <mh@imko.de>
 
 ENV VERSION 1.2.0
 
-# defaults, overwrite via cli to customize
+# defaults, overwrite via cli to customize (not used for now)
 ENV PARTKEEPR_DATABASE_HOST database
 ENV PARTKEEPR_DATABASE_NAME partkeepr
 ENV PARTKEEPR_DATABASE_PORT 3306
