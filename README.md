@@ -1,8 +1,8 @@
 ## mhubig/partkeepr docker image repository
 
 This is the repository for the trusted builds of the [`mhubig/partkeepr`][0] docker
-image. Releases are made with the help of [git-flow (AVH Edition)][1] and keept
-in sync with the [partkeepr][2] releases.
+image. Releases are made with the help of [git-flow (AVH Edition)][1] and keept in
+sync with the [partkeepr][2] releases.
 
 > The most resent version is: 1.2.1
 
