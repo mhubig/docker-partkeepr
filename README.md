@@ -11,6 +11,10 @@ the following command:
 
     $ docker run -d -p 80:80 --name partkeepr mhubig/partkeepr
 
+Or to run it together with a MariaDB database container.
+
+    $ docker-compose up
+
 [1]: https://github.com/petervanderdoes/gitflow
 [2]: http://www.partkeepr.org
 [3]: https://www.docker.io
