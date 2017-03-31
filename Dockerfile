@@ -1,90 +1,42 @@
-# start from phusion/baseimage
-FROM phusion/baseimage:0.9.8
-MAINTAINER  Markus Hubig <mhubig@imko.de>
+FROM php:7-apache
+MAINTAINER Markus Hubig <mh@imko.de>
 
-# Set correct environment variables.
-ENV HOME /root
-ENV DEBIAN_FRONTEND noninteractive
+ENV VERSION 1.2.0
 
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
+# defaults, overwrite via cli to customize (not used for now)
+ENV PARTKEEPR_DATABASE_HOST database
+ENV PARTKEEPR_DATABASE_NAME partkeepr
+ENV PARTKEEPR_DATABASE_PORT 3306
+ENV PARTKEEPR_DATABASE_USER partkeepr
+ENV PARTKEEPR_DATABASE_PASS partkeepr
+ENV PARTKEEPR_OKTOPART_APIKEY 0123456
 
-# expose HTTP port
-EXPOSE 80
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+        bzip2 \
+        libcurl4-openssl-dev \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libicu-dev \
+        libxml2-dev \
+        libpng12-dev \
+        libldap2-dev \
+    --no-install-recommends && rm -r /var/lib/apt/lists/* \
+    \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) curl ldap bcmath gd dom intl opcache pdo pdo_mysql \
+    \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    \
+    && cd /var/www/html \
+    && curl -sL https://github.com/partkeepr/PartKeepr/releases/download/${VERSION}/partkeepr-${VERSION}.tbz2 |tar -xj --strip 1 \
+    && chown -R www-data:www-data /var/www/html \
+    \
+    && a2enmod rewrite
 
-# Update apt cache & install software
-RUN apt-get update && apt-get install -y \
-    mysql-server \
-    nginx \
-    php5-fpm \
-    php5-common \
-    php-pear \
-    php-apc \
-    php5-mysql \
-    php5-imagick \
-    php5-curl \
-    php5-cli \
-    php5-gd \
-    php5-json
+COPY php.ini /usr/local/etc/php/php.ini
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
-# nginx configuration
-RUN mkdir /srv/www && ln -s /srv/www /var/www
-ADD nginx/nginx.conf /etc/nginx/nginx.conf
-ADD nginx/default /etc/nginx/sites-available/default
-
-# mysql configuration
-ADD mysql/my.cnf /etc/mysql/my.cnf
-
-# PHP5 & PHP-FPM configuration
-ADD php-fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf
-ADD php-fpm/fpm-www.conf /etc/php5/fpm/pool.d/www.conf
-ADD php-fpm/php.ini /etc/php5/fpm/php.ini
-
-RUN pear channel-discover pear.symfony.com
-RUN pear channel-discover pear.doctrine-project.org
-RUN pear channel-discover pear.twig-project.org
-RUN pear install pear.doctrine-project.org/DoctrineORM
-RUN pear install pear.doctrine-project.org/DoctrineSymfonyYaml
-RUN pear install pear.doctrine-project.org/DoctrineSymfonyConsole
-RUN pear install twig/Twig
-
-# download partkeepr
-RUN cd /srv/www && \
-    curl -L http://partkeepr.org/downloads/partkeepr-0.1.9.tbz2 |tar xj && \
-    mv partkeepr-0.1.9 partkeepr
-
-# config partkeepr
-ADD partkeepr/config.php /srv/www/partkeepr/config.php
-ADD partkeepr/config.sql /srv/www/partkeepr/config.sql
-ADD partkeepr/SetupDatabase.php /srv/www/partkeepr/testing/SetupDatabase.php
-ADD partkeepr/cronjobs /etc/cron.d/partkeepr
-
-# fix permissions
-RUN chown -R root:root /srv/www/partkeepr && \
-    chown -R www-data:www-data /srv/www/partkeepr/data
-
-# setup mysql db
-RUN /usr/sbin/mysqld & sleep 10s && \
-    cd /srv/www/partkeepr && \
-    mysql < config.sql
-RUN /usr/sbin/mysqld & sleep 10s &&  \
-    cd /srv/www/partkeepr/testing && \
-    php SetupDatabase.php --yes
-
-# register the nginx service
-RUN mkdir /etc/service/nginx
-ADD nginx/nginx.sh /etc/service/nginx/run
-
-# register the php-fpm service
-RUN mkdir /etc/service/php-fpm
-ADD php-fpm/php-fpm.sh /etc/service/php-fpm/run
-
-# Register the MySQL service
-RUN mkdir /etc/service/mysql
-ADD mysql/mysql.sh /etc/service/mysql/run
-
-# unregister the SSH service
-RUN rm -rf /etc/service/sshd
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+VOLUME /var/www/html/data
