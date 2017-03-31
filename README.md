@@ -4,7 +4,7 @@ This is the repository for the trusted builds of the [`mhubig/partkeepr`][0] doc
 image. Releases are made with the help of [git-flow (AVH Edition)][1] and keept
 in sync with the [partkeepr][2] releases.
 
-> The most resent version is: 1.2.0
+> The most resent version is: 1.2.1
 
 To use it, you need to have a working [docker][3] installation. Start by running
 the following command:
