@@ -13,7 +13,7 @@ ENV PARTKEEPR_OKTOPART_APIKEY 0123456
 
 RUN set -ex \
     && apt-get update && apt-get install -y \
-        bzip2 \
+        bsdtar \
         libcurl4-openssl-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -31,7 +31,7 @@ RUN set -ex \
     && docker-php-ext-enable apcu \
     \
     && cd /var/www/html \
-    && curl -sL https://github.com/partkeepr/PartKeepr/releases/download/${VERSION}/partkeepr-${VERSION}.tbz2 |tar -xj --strip 1 \
+    && curl -sL https://github.com/partkeepr/PartKeepr/releases/download/${VERSION}/partkeepr-${VERSION}.tbz2 |bsdtar --strip-components=1 -xvf- \
     && chown -R www-data:www-data /var/www/html \
     \
     && a2enmod rewrite
