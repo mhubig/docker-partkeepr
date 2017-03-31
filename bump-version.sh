@@ -22,7 +22,6 @@ function commit_hint () {
 function update_version () {
     sed -e "s/> The most resent version is:.*$/> The most resent version is: $1/g" \
         $README_FILE > $README_TEMP
-    sed -e "s/ENV VERSION .*$/ENV VERSION $1/g" $DOCKER_FILE > $DOCKER_TEMP
 }
 
 if [ $# -ne 1 ]; then
