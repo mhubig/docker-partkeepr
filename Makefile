@@ -9,7 +9,7 @@ NAME    := $(ORG)/$(APP)
 BRANCH  := $(shell git rev-parse --abbrev-ref HEAD)
 VERSION := $(shell git describe)
 
-.PHONY: all build tag push list run test inspect stop rm
+.PHONY: all build tag push list
 
 all: build
 
@@ -20,6 +20,12 @@ build:
 		docker build -t $(NAME):$(VERSION) --rm .;		\
 	else												\
 		true;											\
+	fi													\
+
+	# if we're on develop, do it anyway
+	@if  [ $(BRANCH) = 'develop' ];						\
+	then												\
+		docker build -t $(NAME):$(VERSION) --rm .;		\
 	fi
 
 tag: build

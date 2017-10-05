@@ -1,9 +1,10 @@
 FROM php:7-apache
-MAINTAINER Markus Hubig <mh@imko.de>
+LABEL maintainer="Markus Hubig <mh@imko.de>"
+LABEL version="1.2.2"
 
-ENV VERSION 1.2.0
+ENV PARTKEEPR_VERSION 1.3.0
 
-# defaults, overwrite via cli to customize (not used for now)
+# defaults, overwrite via cli or compose to customize
 ENV PARTKEEPR_DATABASE_HOST database
 ENV PARTKEEPR_DATABASE_NAME partkeepr
 ENV PARTKEEPR_DATABASE_PORT 3306
@@ -31,12 +32,14 @@ RUN set -ex \
     && docker-php-ext-enable apcu \
     \
     && cd /var/www/html \
-    && curl -sL https://github.com/partkeepr/PartKeepr/releases/download/${VERSION}/partkeepr-${VERSION}.tbz2 |bsdtar --strip-components=1 -xvf- \
+    && curl -sL https://downloads.partkeepr.org/partkeepr-${PARTKEEPR_VERSION}.tbz2 \
+        |bsdtar --strip-components=1 -xvf- \
     && chown -R www-data:www-data /var/www/html \
     \
     && a2enmod rewrite
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
+COPY docker-php-entrypoint mkparameters parameters.template /usr/local/bin/
 
 VOLUME /var/www/html/data

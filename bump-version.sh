@@ -19,9 +19,14 @@ function commit_hint () {
     echo $MSG1 $MSG2
 }
 
-function update_version () {
+function update_readme () {
     sed -e "s/> The most resent version is:.*$/> The most resent version is: $1/g" \
         $README_FILE > $README_TEMP
+}
+
+function update_docker () {
+    sed -e "s/^LABEL version=\".*\"$/LABEL version=\"$1\"/g" \
+        $DOCKER_FILE > $DOCKER_TEMP
 }
 
 if [ $# -ne 1 ]; then
@@ -29,11 +34,17 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-if ! update_version $1; then
-    echo "Could not bump the version!" >&2
+if ! update_readme $1; then
+    echo "Could not bump version inside $README_FILE!" >&2
     exit 2
 else
     mv $README_TEMP $README_FILE
+fi
+
+if ! update_docker $1; then
+    echo "Could not bump version inside $DOCKER_FILE!" >&2
+    exit 2
+else
     mv $DOCKER_TEMP $DOCKER_FILE
 fi
 
