@@ -23,6 +23,10 @@ or
 
     docker-compose exec -it partkeepr cat app/authkey.php
 
+The default database parameters are:
+
+![Database Parameters](setupdb.png?raw=true "Database Parameters")
+
 ## HOWTO manually build the docker image
 
     make build
