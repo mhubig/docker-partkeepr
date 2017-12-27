@@ -14,6 +14,15 @@ Or to run it together with a MariaDB database container.
 
     docker-compose up
 
+Now go to the partkeepr setup page (e.g.: http://localhost/setup) and follow the directions. To get
+the authentikation key you can use something like:
+
+    docker exec -it partkeepr cat app/authkey.php
+
+or
+
+    docker-compose exec -it partkeepr cat app/authkey.php
+
 ## HOWTO manually build the docker image
 
     make build
