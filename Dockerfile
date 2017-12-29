@@ -28,7 +28,7 @@ RUN set -ex \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) curl ldap bcmath gd dom intl opcache pdo pdo_mysql \
     \
-    && pecl install apcu \
+    && pecl install apcu_bc-beta \
     && docker-php-ext-enable apcu \
     \
     && cd /var/www/html \
