@@ -1,9 +1,10 @@
-FROM php:7-apache
-MAINTAINER Markus Hubig <mh@imko.de>
+FROM php:7.1-apache
+LABEL maintainer="Markus Hubig <mh@imko.de>"
+LABEL version="1.3.0"
 
-ENV VERSION 1.2.0
+ENV PARTKEEPR_VERSION 1.3.0
 
-# defaults, overwrite via cli to customize (not used for now)
+# defaults, overwrite via cli or compose to customize
 ENV PARTKEEPR_DATABASE_HOST database
 ENV PARTKEEPR_DATABASE_NAME partkeepr
 ENV PARTKEEPR_DATABASE_PORT 3306
@@ -19,7 +20,7 @@ RUN set -ex \
         libjpeg62-turbo-dev \
         libicu-dev \
         libxml2-dev \
-        libpng12-dev \
+        libpng-dev \
         libldap2-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/* \
     \
@@ -27,16 +28,19 @@ RUN set -ex \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) curl ldap bcmath gd dom intl opcache pdo pdo_mysql \
     \
-    && pecl install apcu \
+    && pecl install apcu_bc-beta \
     && docker-php-ext-enable apcu \
     \
     && cd /var/www/html \
-    && curl -sL https://github.com/partkeepr/PartKeepr/releases/download/${VERSION}/partkeepr-${VERSION}.tbz2 |bsdtar --strip-components=1 -xvf- \
+    && curl -sL https://downloads.partkeepr.org/partkeepr-${PARTKEEPR_VERSION}.tbz2 \
+        |bsdtar --strip-components=1 -xvf- \
     && chown -R www-data:www-data /var/www/html \
     \
     && a2enmod rewrite
 
+COPY info.php /var/www/html/web/info.php
 COPY php.ini /usr/local/etc/php/php.ini
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
+COPY docker-php-entrypoint mkparameters parameters.template /usr/local/bin/
 
 VOLUME /var/www/html/data
