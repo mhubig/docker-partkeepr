@@ -20,7 +20,7 @@ RUN set -ex \
         libjpeg62-turbo-dev \
         libicu-dev \
         libxml2-dev \
-        libpng12-dev \
+        libpng-dev \
         libldap2-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/* \
     \
