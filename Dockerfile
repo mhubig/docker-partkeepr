@@ -1,4 +1,4 @@
-FROM php:7-apache
+FROM php:7.1-apache
 LABEL maintainer="Markus Hubig <mh@imko.de>"
 LABEL version="1.2.2"
 
