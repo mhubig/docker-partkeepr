@@ -4,7 +4,8 @@ set -e
 PARAMETERS_FILE='/var/www/html/app/config/parameters.php'
 
 mkparameters > $PARAMETERS_FILE
-chown -R www-data:www-data /var/www/html/{app,web}
+chown -R www-data:www-data /var/www/html/app
+chown -R www-data:www-data /var/www/html/web
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
