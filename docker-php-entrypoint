@@ -1,7 +1,10 @@
 #!/bin/sh
 set -e
 
-mkparameters > /var/www/html/app/config/parameters.php
+PARAMETERS_FILE='/var/www/html/app/config/parameters.php'
+
+mkparameters > $PARAMETERS_FILE
+chown www-data:www-data $PARAMETERS_FILE
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
