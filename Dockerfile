@@ -1,5 +1,5 @@
 FROM php:7.1-apache
-LABEL maintainer="Markus Hubig <mh@imko.de>"
+LABEL maintainer="Markus Hubig <mhubig@gmail.com>"
 LABEL version="1.4.0"
 
 ENV PARTKEEPR_VERSION 1.4.0
