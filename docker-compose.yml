@@ -26,7 +26,6 @@ services:
       - MYSQL_PASSWORD=partkeepr
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./:/tmp
 
 volumes:
   partkeepr-data:
