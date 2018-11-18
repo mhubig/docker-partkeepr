@@ -9,8 +9,10 @@ the following command:
 
     $ docker run -d -p 80:80 --name partkeepr mhubig/partkeepr
 
-Or to run it together with a MariaDB database container.
+Or clone the repo and run it together with a MariaDB database container.
 
+    $ git clone https://github.com/mhubig/docker-partkeepr.git
+    $ cd docker-partkeepr
     $ docker-compose up
 
 Now go to the partkeepr setup page (e.g.: http://localhost/setup) and follow the directions. To get the authentikation key you can use something like:
