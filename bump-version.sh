@@ -30,7 +30,7 @@ function update_docker () {
 }
 
 function commit_version () {
-    git commit -s -m "Bumped version number to $1."
+    git commit -m "Bumped version number to $1."
 }
 
 function tag_version () {
