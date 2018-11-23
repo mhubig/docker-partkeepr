@@ -12,6 +12,9 @@ README_TEMP='.README.md.new'
 DOCKER_FILE='Dockerfile'
 DOCKER_TEMP='.Dockerfile.new'
 
+COMPOSE_FILE='docker-compose.yml'
+COMPOSE_TEMP='.docker-compose.yml'
+
 function push_hint () {
     MSG1="Now please push the changes and the new tag like this:"
     MSG2="git push --follow-tags"
@@ -26,6 +29,11 @@ function update_readme () {
 function update_docker () {
     sed -e "s/^LABEL version=\".*\"$/LABEL version=\"$1\"/g" \
         $DOCKER_FILE > $DOCKER_TEMP
+}
+
+function update_compose () {
+    sed -e "s/^\(\s+image: mhubig/partkeepr\):.*$/\1:$1/g" \
+        $COMPOSE_FILE > $COMPOSE_TEMP
 }
 
 function commit_version () {
@@ -60,6 +68,14 @@ if ! update_docker $1; then
 else
     mv $DOCKER_TEMP $DOCKER_FILE
     git add $DOCKER_FILE
+fi
+
+if ! update_compose $1; then
+    echo "Could not bump version inside $COMPOSE_FILE!" >&2
+    exit 2
+else
+    mv $COMPOSE_TEMP $COMPOSE_FILE
+    git add $COMPOSE_FILE
 fi
 
 if ! commit_version $1; then

@@ -1,8 +1,8 @@
 version: "3"
 services:
- 
+
   partkeepr:
-    image: mhubig/partkeepr
+    image: mhubig/partkeepr:1.4.0-8
     environment:
       - PARTKEEPR_DATABASE_HOST=database  # not used for now
       - PARTKEEPR_DATABASE_NAME=partkeepr # not used for now
