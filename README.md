@@ -2,7 +2,7 @@
 
 This is the source repository for the trusted builds of the [`mhubig/partkeepr`][0] docker image releases. For more information on PartKeepr check out the [website][1].
 
-> The most resent version is: 1.4.0-5
+> The most resent version is: 1.4.0-6
 
 To use it, you need to have a working [docker][2] installation. Start by running
 the following command:
