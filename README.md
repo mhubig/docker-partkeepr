@@ -48,7 +48,7 @@ Since I have switched to [GitHub Flow][3], releasing is now quite simple. Ensure
 
 ```shell
 ./bump-version.sh 1.4.0-2
-git push origin 1.4.0-2
+git push --follow-tags
 ```
 
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
