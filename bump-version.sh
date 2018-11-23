@@ -3,15 +3,14 @@
 # Copyright (C) 2014-2018, Markus Hubig <mhubig@gmail.com>
 #
 
+BRANCH_NAME="$(git symbolic-ref HEAD 2>/dev/null)"
+BRANCH_NAME=${BRANCH_NAME##refs/heads/}
+
 README_FILE='README.md'
 README_TEMP='.README.md.new'
 
 DOCKER_FILE='Dockerfile'
 DOCKER_TEMP='.Dockerfile.new'
-
-function usage () {
-    echo "usage: bump-version <version-id>"
-}
 
 function push_hint () {
     MSG1="Now please push the changes like this:"
@@ -38,7 +37,12 @@ function tag_version () {
 }
 
 if [ $# -ne 1 ]; then
-    usage
+    echo "usage: bump-version <version-id>"
+    exit 1
+fi
+
+if [ ! $branch_name="master" ]; then
+    echo "You need to be on master to use this script!"
     exit 1
 fi
 
