@@ -13,8 +13,8 @@ DOCKER_FILE='Dockerfile'
 DOCKER_TEMP='.Dockerfile.new'
 
 function push_hint () {
-    MSG1="Now please push the changes like this:"
-    MSG2="git push origin $1"
+    MSG1="Now please push the changes and the new tag like this:"
+    MSG2="git push --follow-tags"
     echo $MSG1 $MSG2
 }
 
