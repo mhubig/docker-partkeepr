@@ -30,7 +30,7 @@ function update_docker () {
 }
 
 function commit_version () {
-    git commit -a -s -m "Bumped version number to $1."
+    git commit -s -m "Bumped version number to $1."
 }
 
 function tag_version () {
@@ -47,6 +47,7 @@ if ! update_readme $1; then
     exit 2
 else
     mv $README_TEMP $README_FILE
+    git add $README_FILE
 fi
 
 if ! update_docker $1; then
@@ -54,6 +55,7 @@ if ! update_docker $1; then
     exit 2
 else
     mv $DOCKER_TEMP $DOCKER_FILE
+    git add $DOCKER_FILE
 fi
 
 if ! commit_version $1; then
