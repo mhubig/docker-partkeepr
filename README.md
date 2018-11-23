@@ -44,12 +44,11 @@ docker-compose up
 
 ## HowTo create a new release
 
-Since I have switched to [GitHub Flow][3], releasing is now quite simple. Ensure you are on master, bump the version number, commit and push:
+Since I have switched to [GitHub Flow][3], releasing is now quite simple. Ensure you are on master, bump the version number and push:
 
 ```shell
 ./bump-version.sh 1.4.0-2
-git commit -a -s -m "Bumped version number to 1.4.0-2."
-git push
+git push origin 1.4.0-2
 ```
 
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
