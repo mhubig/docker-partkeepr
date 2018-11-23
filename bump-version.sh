@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2014-2017, Markus Hubig <mh@imko.de>
+# Copyright (C) 2014-2018, Markus Hubig <mhubig@gmail.com>
 #
 
 README_FILE='README.md'
@@ -13,9 +13,9 @@ function usage () {
     echo "usage: bump-version <version-id>"
 }
 
-function commit_hint () {
-    MSG1="Now please commit with something like:"
-    MSG2="git commit -a -s -m \"Bumped version number to $1.\""
+function push_hint () {
+    MSG1="Now please push the changes like this:"
+    MSG2="git push origin $1"
     echo $MSG1 $MSG2
 }
 
@@ -27,6 +27,14 @@ function update_readme () {
 function update_docker () {
     sed -e "s/^LABEL version=\".*\"$/LABEL version=\"$1\"/g" \
         $DOCKER_FILE > $DOCKER_TEMP
+}
+
+function commit_version () {
+    git commit -a -s -m "Bumped version number to $1."
+}
+
+function tag_version () {
+    git tag $1
 }
 
 if [ $# -ne 1 ]; then
@@ -48,4 +56,14 @@ else
     mv $DOCKER_TEMP $DOCKER_FILE
 fi
 
-commit_hint $1
+if ! commit_version $1; then
+    echo "Could not commit the new version!" >&2
+    exit 2
+fi
+
+if ! tag_version $1; then
+    echo "Could not tag the new version!" >&2
+    exit 2
+fi
+
+push_hint $1
