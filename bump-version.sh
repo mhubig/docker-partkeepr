@@ -32,7 +32,7 @@ function update_docker () {
 }
 
 function update_compose () {
-    sed -e "s/^\(\s+image: mhubig/partkeepr\):.*$/\1:$1/g" \
+    sed -e "s#\(image: mhubig/partkeepr\):.*#\1:$1#g" \
         $COMPOSE_FILE > $COMPOSE_TEMP
 }
 
