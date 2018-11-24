@@ -37,10 +37,10 @@ The default database parameters are:
 
 ![Database Parameters](https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png "Database Parameters")
 
-## Howto manually build and tag the docker image
+## Howto manually build the docker image
 
 ```shell
-make build tag
+docker build -t mhubig/partkeepr:latest --rm .
 ```
 
 ## Howto create a new release

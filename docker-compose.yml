@@ -2,7 +2,7 @@ version: "3"
 services:
 
   partkeepr:
-    image: mhubig/partkeepr:1.4.0-12
+    image: mhubig/partkeepr:latest
     environment:
       - PARTKEEPR_DATABASE_HOST=database
       - PARTKEEPR_DATABASE_NAME=partkeepr
