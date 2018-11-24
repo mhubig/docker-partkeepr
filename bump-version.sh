@@ -17,7 +17,7 @@ COMPOSE_TEMP='.docker-compose.yml'
 
 function push_hint () {
     MSG1="Now please push the changes and the new tag like this:"
-    MSG2="git push --follow-tags"
+    MSG2="git push && git push --tags"
     echo $MSG1 $MSG2
 }
 
