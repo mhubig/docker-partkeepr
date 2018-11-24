@@ -14,6 +14,7 @@ services:
       - "80:80"
     volumes:
       - partkeepr-data:/var/www/html/data
+      - partkeepr-web:/var/www/html/web
     depends_on:
       - database
 
@@ -29,4 +30,5 @@ services:
 
 volumes:
   partkeepr-data:
+  partkeepr-web:
   mysql-data:
