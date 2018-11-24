@@ -4,7 +4,6 @@ LABEL version="1.4.0-10"
 
 ENV PARTKEEPR_VERSION 1.4.0
 
-# defaults, overwrite via cli or compose to customize
 ENV PARTKEEPR_DATABASE_HOST database
 ENV PARTKEEPR_DATABASE_NAME partkeepr
 ENV PARTKEEPR_DATABASE_PORT 3306
@@ -44,3 +43,6 @@ COPY apache.conf /etc/apache2/sites-available/000-default.conf
 COPY docker-php-entrypoint mkparameters parameters.template /usr/local/bin/
 
 VOLUME ["/var/www/html/data", "/var/www/html/web"]
+
+ENTRYPOINT ["docker-php-entrypoint"]
+CMD ["apache2-foreground"]

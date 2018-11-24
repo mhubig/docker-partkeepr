@@ -1,6 +1,6 @@
 #!/usr/bin/env make -f
 #
-# Copyright (C) 2014-2017, Markus Hubig <mh@imko.de>
+# Copyright (C) 2014-2018, Markus Hubig <mhubig@gmail.com>
 #
 
 ORG     := mhubig
