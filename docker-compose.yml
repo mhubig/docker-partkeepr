@@ -2,14 +2,14 @@ version: "3"
 services:
 
   partkeepr:
-    image: mhubig/partkeepr:1.4.0-10
+    image: mhubig/partkeepr:1.4.0-6
     environment:
-      - PARTKEEPR_DATABASE_HOST=database  # not used for now
-      - PARTKEEPR_DATABASE_NAME=partkeepr # not used for now
-      - PARTKEEPR_DATABASE_PORT=3306      # not used for now
-      - PARTKEEPR_DATABASE_USER=partkeepr # not used for now
-      - PARTKEEPR_DATABASE_PASS=partkeepr # not used for now
-      - PARTKEEPR_OKTOPART_APIKEY=0123456 # not used for now
+      - PARTKEEPR_DATABASE_HOST=database
+      - PARTKEEPR_DATABASE_NAME=partkeepr
+      - PARTKEEPR_DATABASE_PORT=3306
+      - PARTKEEPR_DATABASE_USER=partkeepr
+      - PARTKEEPR_DATABASE_PASS=partkeepr
+      - PARTKEEPR_OKTOPART_APIKEY
     ports:
       - "80:80"
     volumes:

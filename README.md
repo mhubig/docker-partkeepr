@@ -8,7 +8,8 @@ To use it, you need to have a working [docker][2] installation. Start by running
 the following command:
 
 ```shell
-docker run -d -p 80:80 --name partkeepr mhubig/partkeepr
+export PARTKEEPR_OKTOPART_APIKEY=0123456
+docker run -d -p 80:80 -e PARTKEEPR_OKTOPART_APIKEY --name partkeepr mhubig/partkeepr
 ```
 
 Or clone the repo and run it together with a MariaDB database container.
@@ -16,6 +17,7 @@ Or clone the repo and run it together with a MariaDB database container.
 ```shell
 git clone https://github.com/mhubig/docker-partkeepr.git
 cd docker-partkeepr
+export PARTKEEPR_OKTOPART_APIKEY=0123456
 docker-compose up
 ```
 
@@ -35,19 +37,18 @@ The default database parameters are:
 
 ![Database Parameters](https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png "Database Parameters")
 
-## HOWTO manually build the docker image
+## Howto manually build and tag the docker image
 
 ```shell
-make tag
-docker-compose up
+make build tag
 ```
 
-## HowTo create a new release
+## Howto create a new release
 
 Since I have switched to [GitHub Flow][3], releasing is now quite simple. Ensure you are on master, bump the version number and push:
 
 ```shell
-./bump-version.sh 1.4.0-2
+./bump-version.sh 1.4.0-10
 git push --follow-tags
 ```
 
