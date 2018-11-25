@@ -1,6 +1,6 @@
 FROM php:7.1-apache
 LABEL maintainer="Markus Hubig <mhubig@gmail.com>"
-LABEL version="1.4.0-14"
+LABEL version="1.4.0-15"
 
 ENV PARTKEEPR_VERSION 1.4.0
 
