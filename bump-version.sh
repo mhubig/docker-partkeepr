@@ -20,7 +20,7 @@ function push_hint () {
 
 function update_readme () {
     sed -e "s/> The most resent version is: .*$/> The most resent version is: $1/g" \
-        -e "s/./bump-version.sh .*/./bump-version.sh $1/g" \
+        -e "s#./bump-version.sh .*#./bump-version.sh $1#g" \
         -e "s/(e.g. `.*`)/(e.g. `$1`)/g" \
         $README_FILE > $README_TEMP
 }
