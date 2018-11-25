@@ -2,7 +2,7 @@
 
 This is the source repository for the trusted builds of the [`mhubig/partkeepr`][0] docker image releases. For more information on PartKeepr check out the [website][1].
 
-> The most resent version is: 1.4.0-13
+> The most resent version is: 1.4.0-14
 
 To use it, you need to have a working [docker][2] installation. Start by running
 the following command:
@@ -48,7 +48,7 @@ docker build -t mhubig/partkeepr:latest --rm .
 Since I have switched to [GitHub Flow][3], releasing is now quite simple. Ensure you are on master, bump the version number and push:
 
 ```shell
-./bump-version.sh 1.4.0-13
+./bump-version.sh 1.4.0-14
 git push && git push --tags
 ```
 
