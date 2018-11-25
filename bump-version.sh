@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2014-2018, Markus Hubig <mhubig@gmail.com>
 #
+set -e
 
 BRANCH_NAME="$(git symbolic-ref HEAD 2>/dev/null)"
 BRANCH_NAME=${BRANCH_NAME##refs/heads/}
@@ -20,8 +21,8 @@ function push_hint () {
 
 function update_readme () {
     sed -e "s/> The most resent version is: .*$/> The most resent version is: $1/g" \
-        -e "s#./bump-version.sh .*#./bump-version.sh $1#g" \
-        -e "s/(e.g. `.*`)/(e.g. `$1`)/g" \
+        -e "s/bump-version\.sh .*/bump-version\.sh $1/g" \
+        -e "s/(e.g. \`.*\`)/(e.g. \`$1\`)/g" \
         $README_FILE > $README_TEMP
 }
 

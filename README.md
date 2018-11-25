@@ -54,7 +54,7 @@ git push && git push --tags
 
 ## Docker Image CI/CD Pipeline
 
-This git repo is connected to a build Pipeline on https://hub.docker.com. A new Image is build for every Tag pushed to this repo. The images are taged with a version number (e.g. `1.4.0-13`) and `latest`.
+This git repo is connected to a build Pipeline on https://hub.docker.com. A new Image is build for every Tag pushed to this repo. The images are taged with a version number (e.g. `1.4.0-14`) and `latest`.
 
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
 [1]: http://www.partkeepr.org
