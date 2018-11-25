@@ -48,9 +48,13 @@ docker build -t mhubig/partkeepr:latest --rm .
 Since I have switched to [GitHub Flow][3], releasing is now quite simple. Ensure you are on master, bump the version number and push:
 
 ```shell
-./bump-version.sh 1.4.0-10
+./bump-version.sh 1.4.0-13
 git push && git push --tags
 ```
+
+## Docker Image CI/CD Pipeline
+
+This git repo is connected to a build Pipeline on https://hub.docker.com. A new Image is build for every Tag pushed to this repo. The images are taged with a version number (e.g. `1.4.0-13`) and `latest`.
 
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
 [1]: http://www.partkeepr.org
