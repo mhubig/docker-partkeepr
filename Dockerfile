@@ -1,18 +1,24 @@
 FROM php:7.1-apache
+ARG BUILD_NUMBER=16
+ARG PARTKEEPR_VERSION=1.4.0
 LABEL maintainer="Markus Hubig <mhubig@gmail.com>"
-LABEL version="1.4.0-15"
+LABEL version="${PARTKEEPR_VERSION}-${BUILD_NUMBER}"
 
-ENV PARTKEEPR_VERSION 1.4.0
 
-ENV PARTKEEPR_DATABASE_HOST database
-ENV PARTKEEPR_DATABASE_NAME partkeepr
-ENV PARTKEEPR_DATABASE_PORT 3306
-ENV PARTKEEPR_DATABASE_USER partkeepr
-ENV PARTKEEPR_DATABASE_PASS partkeepr
-ENV PARTKEEPR_OKTOPART_APIKEY 0123456
+ENV \
+	PARTKEEPR_AUTHENTICATION_PROVIDER='PartKeepr.Auth.WSSEAuthenticationProvider' \
+	PARTKEEPR_DATABASE_HOST=database \
+	PARTKEEPR_DATABASE_NAME=partkeepr \
+	PARTKEEPR_DATABASE_PORT=3306 \
+	PARTKEEPR_DATABASE_USER=partkeepr \
+	PARTKEEPR_DATABASE_PASS=partkeepr \
+	PARTKEEPR_OKTOPART_APIKEY=0123456 \
+	PARTKEEPR_SECRET='OJBKOJIKNONAJENLBJJNLFIDPDGKDIED'
 
 RUN set -ex \
-    && apt-get update && apt-get install -y \
+    && apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y \
         bsdtar \
         libcurl4-openssl-dev \
         libfreetype6-dev \
@@ -21,7 +27,8 @@ RUN set -ex \
         libxml2-dev \
         libpng-dev \
         libldap2-dev \
-    --no-install-recommends && rm -r /var/lib/apt/lists/* \
+    --no-install-recommends \
+    && rm -r /var/lib/apt/lists/* \
     \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \

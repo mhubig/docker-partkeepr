@@ -1,5 +1,5 @@
 <?php
-$container->setParameter('authentication_provider', 'PartKeepr.Auth.WSSEAuthenticationProvider');
+$container->setParameter('authentication_provider', '{{ PARTKEEPR_AUTHENTICATION_PROVIDER}}');
 $container->setParameter('cache.doctrine', 'array');
 $container->setParameter('cache.dunglas', false);
 $container->setParameter('database_driver', 'pdo_mysql');
