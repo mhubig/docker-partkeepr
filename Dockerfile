@@ -1,5 +1,5 @@
 FROM php:7.1-apache
-ARG BUILD_NUMBER=16
+ARG BUILD_NUMBER=17
 ARG PARTKEEPR_VERSION=1.4.0
 LABEL maintainer="Markus Hubig <mhubig@gmail.com>"
 LABEL version="${PARTKEEPR_VERSION}-${BUILD_NUMBER}"
@@ -27,6 +27,9 @@ RUN set -ex \
         libxml2-dev \
         libpng-dev \
         libldap2-dev \
+        cron \
+        supervisor \
+        syslog-ng \
     --no-install-recommends \
     && rm -r /var/lib/apt/lists/* \
     \
@@ -48,8 +51,12 @@ COPY info.php /var/www/html/web/info.php
 COPY php.ini /usr/local/etc/php/php.ini
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 COPY docker-php-entrypoint mkparameters parameters.template /usr/local/bin/
+COPY supervisord.conf /etc/supervisor/conf.d/partkeepr.conf
+COPY crontab /etc/cron.d/partkeepr
+RUN \
+	chmod 0600 /etc/cron.d/partkeepr && \
+	chown root:root /etc/cron.d/partkeepr
 
 VOLUME ["/var/www/html/data", "/var/www/html/web"]
 
-ENTRYPOINT ["docker-php-entrypoint"]
-CMD ["apache2-foreground"]
+CMD [ "/usr/bin/supervisord", "--nodaemon", "--configuration=/etc/supervisor/supervisord.conf" ]

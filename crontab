@@ -1,0 +1,2 @@
+#0 0,6,12,18 * * * /usr/bin/php <path-to-partkeepr>/app/console partkeepr:cron:run
+0 */6 * * *	www-data	/usr/local/bin/php /var/www/html/app/console partkeepr:cron:run
