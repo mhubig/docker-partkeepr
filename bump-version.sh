@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2014-2018, Markus Hubig <mhubig@gmail.com>
+# Copyright (C) 2014-2020, Markus Hubig <mhubig@gmail.com>
 #
 set -e
 
 BRANCH_NAME="$(git symbolic-ref HEAD 2>/dev/null)"
 BRANCH_NAME=${BRANCH_NAME##refs/heads/}
 
-README_FILE='README.md'
-README_TEMP='.README.md.new'
+README_FILE="README.md"
+README_TEMP=".README.md.new"
 
-DOCKER_FILE='Dockerfile'
-DOCKER_TEMP='.Dockerfile.new'
+DOCKER_FILE="Dockerfile"
+DOCKER_TEMP=".Dockerfile.new"
 
 function push_hint () {
     MSG1="Now please push the changes and the new tag like this:"
     MSG2="git push && git push --tags"
-    echo $MSG1 $MSG2
+    echo "$MSG1 $MSG2"
 }
 
 function update_readme () {
@@ -36,7 +36,7 @@ function commit_version () {
 }
 
 function tag_version () {
-    git tag $1
+    git tag "$1"
 }
 
 if [ $# -ne 1 ]; then
@@ -44,12 +44,12 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-if [ ! $branch_name="master" ]; then
+if [[ ! $BRANCH_NAME = master ]]; then
     echo "You need to be on master to use this script!"
     exit 1
 fi
 
-if ! update_readme $1; then
+if ! update_readme "$1"; then
     echo "Could not bump version inside $README_FILE!" >&2
     exit 2
 else
@@ -57,7 +57,7 @@ else
     git add $README_FILE
 fi
 
-if ! update_docker $1; then
+if ! update_docker "$1"; then
     echo "Could not bump version inside $DOCKER_FILE!" >&2
     exit 2
 else
@@ -65,14 +65,14 @@ else
     git add $DOCKER_FILE
 fi
 
-if ! commit_version $1; then
+if ! commit_version "$1"; then
     echo "Could not commit the new version!" >&2
     exit 2
 fi
 
-if ! tag_version $1; then
+if ! tag_version "$1"; then
     echo "Could not tag the new version!" >&2
     exit 2
 fi
 
-push_hint $1
+push_hint "$1"
