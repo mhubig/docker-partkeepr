@@ -13,7 +13,8 @@ export PARTKEEPR_OKTOPART_APIKEY=0123456
 docker run -d -p 80:80 -e PARTKEEPR_OKTOPART_APIKEY --name partkeepr mhubig/partkeepr
 ```
 
-Or clone the repo and run it together with a MariaDB database container.
+Or clone the repo and run PartKeepr with docker-compose. This will also start a preconfigured
+MariaDB database container.
 
 ```shell
 git clone https://github.com/mhubig/docker-partkeepr.git
