@@ -10,7 +10,7 @@ the following command:
 
 ```shell
 export PARTKEEPR_OKTOPART_APIKEY=0123456
-docker run -d -p 80:80 -e PARTKEEPR_OKTOPART_APIKEY --name partkeepr mhubig/partkeepr
+docker run -d -p 8080:80 -e PARTKEEPR_OKTOPART_APIKEY --name partkeepr mhubig/partkeepr
 ```
 
 Or clone the repo and run PartKeepr with docker-compose. This will also start a preconfigured
@@ -26,7 +26,7 @@ docker-compose up
 > To get a list of all supported environmnet variables go to the file [`mkparameters`][3],
 > starting at line 15.
 
-Now open the partkeepr setup page (e.g.: http://localhost/setup) and follow the
+Now open the partkeepr setup page (e.g.: http://localhost:8080/setup) and follow the
 directions. To get the generated authentikation key you do something like this:
 
 ```shell
