@@ -20,7 +20,7 @@ MariaDB database container.
 git clone https://github.com/mhubig/docker-partkeepr.git
 cd docker-partkeepr
 export PARTKEEPR_OKTOPART_APIKEY=0123456
-docker-compose up
+docker-compose up # add -d to run in deamon mode
 ```
 
 > To get a list of all supported environmnet variables go to the file [`mkparameters`][3],
