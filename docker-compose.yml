@@ -19,7 +19,7 @@ services:
       - database
 
   database:
-    image: mariadb:10.3
+    image: mariadb:10.0
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
       - MYSQL_DATABASE=partkeepr
