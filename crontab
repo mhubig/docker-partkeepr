@@ -1,2 +1,2 @@
-0 0,6,12,18 * * * /usr/local/bin/php /var/www/html/app/console partkeepr:cron:run
+*/10 * * * * /usr/local/bin/php /var/www/html/app/console partkeepr:cron:run -V 2>&1 > /proc/1/fd/1
 # Don't remove the empty line at the end of this file. It is required to run the cron job

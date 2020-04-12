@@ -1,6 +1,16 @@
 version: "3"
 services:
 
+  database:
+    image: mariadb:10.0
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=partkeepr
+      - MYSQL_USER=partkeepr
+      - MYSQL_PASSWORD=partkeepr
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   partkeepr:
     image: mhubig/partkeepr:latest
     environment:
@@ -51,22 +61,25 @@ services:
     ports:
       - "8080:80"
     volumes:
+      - partkeepr-conf:/var/www/html/app/config
       - partkeepr-data:/var/www/html/data
       - partkeepr-web:/var/www/html/web
     depends_on:
       - database
 
-  database:
-    image: mariadb:10.0
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_DATABASE=partkeepr
-      - MYSQL_USER=partkeepr
-      - MYSQL_PASSWORD=partkeepr
+  cronjob:
+    image: mhubig/partkeepr:latest
+    entrypoint: []
+    command: bash -c "crontab /etc/cron.d/partkeepr && cron -f"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - partkeepr-conf:/var/www/html/app/config:ro
+      - partkeepr-data:/var/www/html/data
+      - partkeepr-web:/var/www/html/web
+    depends_on:
+      - partkeepr
 
 volumes:
+  partkeepr-conf:
   partkeepr-data:
   partkeepr-web:
   mysql-data:
