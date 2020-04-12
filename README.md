@@ -27,7 +27,7 @@ docker-compose exec partkeepr cat app/authkey.php
 
 The default database parameters are:
 
-![Database Parameters](https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png "Database Parameters")
+<img src="https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png" width="500">
 
 ## Howto manually build & run the docker image
 
