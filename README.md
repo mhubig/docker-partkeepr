@@ -3,7 +3,7 @@
 This is the source repository for the trusted builds of the [`mhubig/partkeepr`][0]
 docker image releases. For more information on PartKeepr check out the [website][1].
 
-> The most resent version is: 1.4.0-17
+> The most resent version is: 1.4.0-18
 
 To use it, you need to have a working [docker][2] installation. Start by running
 the following command:
@@ -55,7 +55,7 @@ Since I have switched to [GitHub Flow][4], releasing is now quite simple.
 Ensure you are on master, bump the version number and push:
 
 ```shell
-./bump-version.sh 1.4.0-17
+./bump-version.sh 1.4.0-18
 git push && git push --tags
 ```
 
@@ -63,7 +63,7 @@ git push && git push --tags
 
 This git repo is connected to a build Pipeline on https://hub.docker.com. A new
 Image is build for every Tag pushed to this repo. The images are taged with a
-version number (e.g. `1.4.0-17`) and `latest`.
+version number (e.g. `1.4.0-18`) and `latest`.
 
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
 [1]: http://www.partkeepr.org
