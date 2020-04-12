@@ -14,6 +14,7 @@ RUN set -ex \
         libxml2-dev \
         libpng-dev \
         libldap2-dev \
+        cron \
     --no-install-recommends && rm -r /var/lib/apt/lists/* \
     \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
@@ -30,6 +31,7 @@ RUN set -ex \
     \
     && a2enmod rewrite
 
+COPY crontab /etc/cron.d/partkeepr
 COPY info.php /var/www/html/web/info.php
 COPY php.ini /usr/local/etc/php/php.ini
 COPY apache.conf /etc/apache2/sites-available/000-default.conf

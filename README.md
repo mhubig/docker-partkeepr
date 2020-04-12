@@ -5,35 +5,21 @@ docker image releases. For more information on PartKeepr check out the [website]
 
 > The most resent version is: 1.4.0-18
 
-To use it, you need to have a working [docker][2] installation. Start by running
-the following command:
+To use it, you need to have a working [docker][2] installation. Start by cloning the
+repo and running the following commands:
 
 ```shell
-export PARTKEEPR_OKTOPART_APIKEY=0123456
-docker run -d -p 8080:80 -e PARTKEEPR_OKTOPART_APIKEY --name partkeepr mhubig/partkeepr
-```
-
-Or clone the repo and run PartKeepr with docker-compose. This will also start a preconfigured
-MariaDB database container.
-
-```shell
-git clone https://github.com/mhubig/docker-partkeepr.git
-cd docker-partkeepr
-export PARTKEEPR_OKTOPART_APIKEY=0123456
+export PARTKEEPR_OKTOPART_APIKEY=0123456 # optional, get one here https://octopart.com
 docker-compose up # add -d to run in deamon mode
 ```
 
-> To get a list of all supported environmnet variables go to the file [`mkparameters`][3],
-> starting at line 15.
+This will start PartKeepr and a preconfigured MariaDB database container.
+
+> To get a list of all supported PARTKEEPR_ environment variables go to the file
+> [`mkparameters`][3], starting at line 15.
 
 Now open the partkeepr setup page (e.g.: http://localhost:8080/setup) and follow the
-directions. To get the generated authentikation key you do something like this:
-
-```shell
-docker exec -it partkeepr cat app/authkey.php
-```
-
-or
+instructions. To get the generated authentikation key execute the following command:
 
 ```shell
 docker-compose exec partkeepr cat app/authkey.php
@@ -41,12 +27,13 @@ docker-compose exec partkeepr cat app/authkey.php
 
 The default database parameters are:
 
-![Database Parameters](https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png "Database Parameters")
+<img src="https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png" width="500">
 
-## Howto manually build the docker image
+## Howto manually build & run the docker image
 
 ```shell
 docker build -t mhubig/partkeepr:latest --rm .
+docker run -d -p 8080:80 --name partkeepr mhubig/partkeepr
 ```
 
 ## Howto create a new release
@@ -61,7 +48,7 @@ git push && git push --tags
 
 ## Docker Image CI/CD Pipeline
 
-This git repo is connected to a build Pipeline on https://hub.docker.com. A new
+This git repo is connected to a build Pipeline at https://hub.docker.com. A new
 Image is build for every Tag pushed to this repo. The images are taged with a
 version number (e.g. `1.4.0-18`) and `latest`.
 
