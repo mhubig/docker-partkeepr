@@ -3,13 +3,13 @@
 This is the source repository for the trusted builds of the [`mhubig/partkeepr`][0]
 docker image releases. For more information on PartKeepr check out the [website][1].
 
-> The most resent version is: 1.4.0-20
+> The most recent version is: 1.4.0-20
 
 To use it, you need to have a working [docker][2] installation. Start by cloning the
 repo and running the following commands:
 
 ```shell
-export PARTKEEPR_OKTOPART_APIKEY=0123456 # optional, get one here https://octopart.com
+export PARTKEEPR_OCTOPART_APIKEY=0123456 # optional, get one here https://octopart.com
 docker-compose up # add -d to run in deamon mode
 ```
 
@@ -19,7 +19,7 @@ This will start PartKeepr and a preconfigured MariaDB database container.
 > [`mkparameters`][3], starting at line 15.
 
 Now open the partkeepr setup page (e.g.: http://localhost:8080/setup) and follow the
-instructions. To get the generated authentikation key execute the following command:
+instructions. To get the generated authentication key execute the following command:
 
 ```shell
 docker-compose exec partkeepr cat app/authkey.php
@@ -29,14 +29,14 @@ The default database parameters are:
 
 <img src="https://raw.githubusercontent.com/mhubig/docker-partkeepr/master/setupdb.png" width="500">
 
-## Howto manually build & run the docker image
+## How to manually build & run the docker image
 
 ```shell
 docker build -t mhubig/partkeepr:latest --rm .
 docker run -d -p 8080:80 --name partkeepr mhubig/partkeepr
 ```
 
-## Howto create a new release
+## How to create a new release
 
 Since I have switched to [GitHub Flow][4], releasing is now quite simple.
 Ensure you are on master, bump the version number and push:
