@@ -42,7 +42,7 @@ $container->setParameter('partkeepr.filesystem.quota', filter_var('{{ PARTKEEPR_
 $container->setParameter('partkeepr.maintenance', filter_var('{{ PARTKEEPR_MAINTENANCE }}', FILTER_VALIDATE_BOOLEAN));
 $container->setParameter('partkeepr.maintenance.message', '{{ PARTKEEPR_MAINTENANCE_MESSAGE }}');
 $container->setParameter('partkeepr.maintenance.title', '{{ PARTKEEPR_MAINTENANCE_TITLE }}');
-$container->setParameter('partkeepr.octopart.apikey', '{{ PARTKEEPR_OKTOPART_APIKEY }}');
+$container->setParameter('partkeepr.octopart.apikey', '{{ PARTKEEPR_OCTOPART_APIKEY }}');
 $container->setParameter('partkeepr.parts.internalpartnumberunique', filter_var('{{ PARTKEEPR_PARTS_INTERNALPARTNUMBERUNIQUE }}', FILTER_VALIDATE_BOOLEAN));
 $container->setParameter('partkeepr.parts.limit', filter_var('{{ PARTKEEPR_PARTS_LIMIT }}', FILTER_VALIDATE_BOOLEAN));
 $container->setParameter('partkeepr.users.limit', filter_var('{{ PARTKEEPR_USERS_LIMIT }}', FILTER_VALIDATE_BOOLEAN));
