@@ -47,3 +47,6 @@ $container->setParameter('partkeepr.parts.internalpartnumberunique', filter_var(
 $container->setParameter('partkeepr.parts.limit', filter_var('{{ PARTKEEPR_PARTS_LIMIT }}', FILTER_VALIDATE_BOOLEAN));
 $container->setParameter('partkeepr.users.limit', filter_var('{{ PARTKEEPR_USERS_LIMIT }}', FILTER_VALIDATE_BOOLEAN));
 $container->setParameter('secret', '{{ PARTKEEPR_SECRET }}');
+{% if PARTKEEPR_BASE_URL %}
+$container->setParameter('partkeepr.frontend.base_url', '{{PARTKEEPR_BASE_URL}}');
+{% endif %}
