@@ -60,6 +60,8 @@ services:
       - PARTKEEPR_PARTS_LIMIT
       - PARTKEEPR_USERS_LIMIT
       - PARTKEEPR_SECRET
+      - PARTKEEPR_AUTHENTICATION_PROVIDER
+      - PARTKEEPR_BASE_URL
     ports:
       - "8080:80"
     volumes:

@@ -60,6 +60,7 @@ $values = array(
     'PARTKEEPR_PARTS_LIMIT' => getenv('PARTKEEPR_PARTS_LIMIT') ?: False,
     'PARTKEEPR_USERS_LIMIT' => getenv('PARTKEEPR_USERS_LIMIT') ?: False,
     'PARTKEEPR_SECRET' => getenv('PARTKEEPR_SECRET') ?: 'OJBKOJIKNONAJENLBJJNLFIDPDGKDIED',
+    'PARTKEEPR_BASE_URL' => getenv('PARTKEEPR_BASE_URL') ?: NULL,
 );
 
 echo $template->render($values);
