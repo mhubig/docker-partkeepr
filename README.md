@@ -52,6 +52,24 @@ This git repo is connected to a build Pipeline at https://hub.docker.com. A new
 Image is build for every Tag pushed to this repo. The images are taged with a
 version number (e.g. `1.4.0-20`) and `latest`.
 
+## Backup data
+
+Execute these comands in your server machine and then copy the tarballs with scp or rsync to your hard drive or cloud to backup them.
+
+```shell
+docker run --rm --volumes-from partkeepr_database_1 -v $(pwd):/backup:z ubuntu tar cvfz /backup/backup_database_$(date +"%d-%m-%y").tar /var/lib/mysql
+docker run --rm --volumes-from partkeepr_partkeepr_1 -v $(pwd):/backup:z ubuntu tar cvfz /backup/backup_partkeepr_$(date +"%d-%m-%y").tar /var/www/html/app/config /var/www/html/data /var/www/html/web
+```
+
+## Restore data
+
+After installing a new partkeepr docker container run the next commands to restore your data; first stop the containers. **Note: You may need to remove the "--strip 1" part**.
+
+```shell
+docker run --rm --volumes-from partkeepr_database_1 -v $(pwd):/backup ubuntu bash -c "cd / && tar xvf /backup/backup_database_dd-mm-yy.tar --strip 1"
+docker run --rm --volumes-from partkeepr_partkeepr_1 -v $(pwd):/backup ubuntu bash -c "cd / && tar xvf /backup/backup_partkeepr_dd-mm-yy.tar --strip 1"
+```
+
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
 [1]: http://www.partkeepr.org
 [2]: https://www.docker.com
