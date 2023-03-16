@@ -54,21 +54,33 @@ version number (e.g. `1.4.0-20`) and `latest`.
 
 ## Backup data
 
-Execute these comands in your server machine and then copy the tarballs with scp or rsync to your hard drive or cloud to backup them.
+Commands to backup the volumes using a `busybox` container. Consider containers named: `partkeepr-cronjob-1`, `partkeepr-database-1` and `partkeepr-partkeepr-1`.
+- If you find any problem with busybox you can substitute `busybox` for `ubuntu` on the commands.
+- You can omit the `v` flag on `tar` to avoid verbosity.
 
+1. Move to the folder where you want to save your backups: `cd ~/backups/partkeepr`.
+2. Stop the containers: `docker stop partkeepr-partkeepr-1 partkeepr-database-1 partkeepr-cronjob-1`
+3. Execute these commands to create compressed tarballs.
 ```shell
-docker run --rm --volumes-from partkeepr_database_1 -v $(pwd):/backup:z ubuntu tar cvfz /backup/backup_database_$(date +"%d-%m-%y").tar /var/lib/mysql
-docker run --rm --volumes-from partkeepr_partkeepr_1 -v $(pwd):/backup:z ubuntu tar cvfz /backup/backup_partkeepr_$(date +"%d-%m-%y").tar /var/www/html/app/config /var/www/html/data /var/www/html/web
+docker run --rm --volumes-from partkeepr-database-1 -v $(pwd):/backup busybox tar cvzf /backup/backup_database_$(date +"%Y-%m-%d_%H-%M").tar /var/lib/mysql
+docker run --rm --volumes-from partkeepr-partkeepr-1 -v $(pwd):/backup busybox tar cvzf /backup/backup_partkeepr_$(date +"%Y-%m-%d_%H-%M").tar /var/www/html/app/config /var/www/html/data /var/www/html/web
 ```
+4. Copy the resultant tarballs using `scp` or `rsync` to your hard drive or cloud to backup them.
 
 ## Restore data
 
-After installing a new partkeepr docker container run the next commands to restore your data; first stop the containers. **Note: You may need to remove the "--strip 1" part**.
+After creating a **new** partkeepr docker stack follow next steps to restore your data using a `busybox` container.
+- If you find any problem with busybox you can substitute `busybox sh` for `ubuntu bash` on the commands.
+- You can omit the `v` flag on `tar` to avoid verbosity.
 
+1. **Important!** Move to the folder where you have your backups: `cd ~/backups/partkeepr`. Needed to mount the tarball in the container.
+2. **Important!** Stop the containers: `docker stop partkeepr-partkeepr-1 partkeepr-database-1 partkeepr-cronjob-1`. It doesn't work when the containers are runnning.
+3. Execute these commands to extract the compressed tarballs into their respective volumes.
 ```shell
-docker run --rm --volumes-from partkeepr_database_1 -v $(pwd):/backup ubuntu bash -c "cd / && tar xvf /backup/backup_database_dd-mm-yy.tar --strip 1"
-docker run --rm --volumes-from partkeepr_partkeepr_1 -v $(pwd):/backup ubuntu bash -c "cd / && tar xvf /backup/backup_partkeepr_dd-mm-yy.tar --strip 1"
+docker run --rm --volumes-from partkeepr-database-1 -v $(pwd):/backup busybox sh -c "cd / && tar xvf /backup/backup_database_2023-03-14_16-00.tar"
+docker run --rm --volumes-from partkeepr-partkeepr-1 -v $(pwd):/backup busybox sh -c "cd / && tar xvf /backup/backup_partkeepr_2023-03-14_16-00.tar"
 ```
+4. Start again the containers: `docker start partkeepr-partkeepr-1 partkeepr-database-1 partkeepr-cronjob-1` and use your credentials to access the UI.
 
 [0]: https://hub.docker.com/r/mhubig/partkeepr/
 [1]: http://www.partkeepr.org
